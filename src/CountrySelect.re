@@ -19,7 +19,10 @@ let make = (~_className, ~_country, ~_onChange) => {
      | Loaded(cs) =>
        cs
        ->Belt.Array.map(c =>
-           <div key={c.value}> {c.label}->React.string </div>
+           <div key={c.value}>
+             <CountryFlag countryCode={c.value} />
+             {c.label}->React.string
+           </div>
          )
        ->React.array
      }}
