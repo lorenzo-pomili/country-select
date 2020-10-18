@@ -16,8 +16,7 @@ external addEventListener: (request, string, unit => unit) => unit =
 [@bs.send] external send: request => unit = "send";
 [@bs.send] external abort: request => unit = "abort";
 
-let getCountries = cbOnLoad => {
-  let request = makeXMLHttpRequest();
+let getCountries = (request, cbOnLoad) => {
   request->addEventListener("load", () => {
     let response = request->response->parseResponse;
     cbOnLoad(response);

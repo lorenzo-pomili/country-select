@@ -7,9 +7,9 @@ type state =
 let make = (~_className, ~_country, ~_onChange) => {
   let (countries, setCountries) = React.useState(() => Loading);
   React.useEffect0(() => {
-    GetData.getCountries(cs => setCountries(_prev => Loaded(cs)));
-    Js.log();
-    Some(() => {Js.log("put abort function here")});
+    let request = GetData.makeXMLHttpRequest();
+    GetData.getCountries(request, cs => setCountries(_prev => Loaded(cs)));
+    Some(() => {GetData.abort(request)});
   });
 
   <div>
