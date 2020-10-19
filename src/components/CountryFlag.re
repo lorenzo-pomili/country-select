@@ -1,3 +1,7 @@
+[@bs.val] external requireCss: string => unit = "require";
+
+requireCss("node_modules/flag-icon-css/css/flag-icon.min.css");
+
 [@react.component]
 let make = (~countryCode) =>
   <span
