@@ -17,14 +17,24 @@ let make = (~_className, ~_country, ~_onChange) => {
      | Loading => <div> "Loading..."->React.string </div>
      | Error => <div> "Error"->React.string </div>
      | Loaded(cs) =>
-       cs
-       ->Belt.Array.map(c =>
-           <div key={c.value}>
-             <CountryFlag countryCode={c.value} />
-             {c.label}->React.string
-           </div>
-         )
-       ->React.array
+       <ReactSelect
+         defaultValue=None
+         isDisabled=false
+         isLoading=false
+         isClearable=true
+         isRtl=true
+         isSearchable=true
+         name="test"
+         options={cs->Belt.Array.map(ReactSelect.optFromCountry)}
+       />
      }}
   </div>;
 };
+
+// {cs
+//  ->Belt.Array.map(c =>
+//      <div key={c.value}>
+//        <CountryFlag countryCode={c.value} />
+//        {c.label}->React.string
+//      </div>
+//    )-> React.array}
