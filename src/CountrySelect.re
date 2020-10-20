@@ -3,6 +3,12 @@ type state =
   | Error
   | Loaded(array(Country.t));
 
+let filterOption = (candidate: ReactSelect.opt, input) =>
+  input !== ""
+    ? Js.String.toLowerCase(input)
+      ->Js.String.includes(Js.String.toLowerCase(candidate.label))
+    : true;
+
 [@react.component]
 let make = (~_className, ~_country, ~_onChange) => {
   let (countries, setCountries) = React.useState(() => Loading);
@@ -34,6 +40,7 @@ let make = (~_className, ~_country, ~_onChange) => {
          isClearable=false
          isRtl=false
          isSearchable=true
+         filterOption
          name="test"
          options={cs->Belt.Array.map(ReactSelect.optFromCountry)}
        />

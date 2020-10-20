@@ -66,6 +66,7 @@ external make:
     ~isRtl: bool,
     ~isSearchable: bool,
     ~name: string,
+    ~filterOption: (opt, string) => bool,
     ~options: array(opt)
   ) =>
   React.element =
