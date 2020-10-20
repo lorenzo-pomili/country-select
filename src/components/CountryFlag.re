@@ -3,7 +3,10 @@
 requireCss("node_modules/flag-icon-css/css/flag-icon.min.css");
 
 [@react.component]
-let make = (~countryCode) =>
-  <span
-    className={"flag-icon flag-icon-" ++ countryCode ++ " flag-icon-squared"}
-  />;
+let make = (~countryCode, ~children) =>
+  <div>
+    <span
+      className={"flag-icon flag-icon-" ++ countryCode ++ " flag-icon-squared"}
+    />
+    children
+  </div>;

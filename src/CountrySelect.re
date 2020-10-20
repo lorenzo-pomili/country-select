@@ -19,10 +19,20 @@ let make = (~_className, ~_country, ~_onChange) => {
      | Loaded(cs) =>
        <ReactSelect
          defaultValue=None
+         components={
+           opt: props =>
+             ReactSelect.Option.make({
+               ...props,
+               children:
+                 <CountryFlag countryCode={props.value}>
+                   {props.children}
+                 </CountryFlag>,
+             }),
+         }
          isDisabled=false
          isLoading=false
-         isClearable=true
-         isRtl=true
+         isClearable=false
+         isRtl=false
          isSearchable=true
          name="test"
          options={cs->Belt.Array.map(ReactSelect.optFromCountry)}
