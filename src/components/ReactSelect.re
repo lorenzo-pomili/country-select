@@ -73,6 +73,11 @@ module MenuList = {
   external make: menuListProps => React.element = "MenuList";
 };
 
+module NoOptionsMessage = {
+  [@bs.module "react-select"] [@bs.scope "components"] [@bs.val]
+  external make: MenuList.menuListProps => React.element = "NoOptionsMessage";
+};
+
 type components = {
   [@bs.as "Option"]
   opt: Option.optionProps => React.element,

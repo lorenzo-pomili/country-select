@@ -28,24 +28,28 @@ let menuList = (props: ReactSelect.MenuList.menuListProps) => {
       ->Belt.Option.getWithDefault(0)
       * itemSize
     };
-  let childrenHeight = props.children->Belt.Array.length * itemSize;
+
+  let numOfChildren = props.children->Belt.Array.length;
+  let childrenHeight = numOfChildren * itemSize;
 
   let height =
     childrenHeight < props.maxHeight ? childrenHeight : props.maxHeight;
-  <FixedSizeList
-    itemSize
-    height
-    itemCount={props.children->Belt.Array.length}
-    initialScrollOffset=initialOffset>
-    {({style, index}) => {
-       <div style>
-         {switch (props.children->Belt.Array.get(index)) {
-          | None => React.null
-          | Some(e) => e
-          }}
-       </div>;
-     }}
-  </FixedSizeList>;
+  numOfChildren > 0
+    ? <FixedSizeList
+        itemSize
+        height
+        itemCount={props.children->Belt.Array.length}
+        initialScrollOffset=initialOffset>
+        {({style, index}) => {
+           <div style>
+             {switch (props.children->Belt.Array.get(index)) {
+              | None => React.null
+              | Some(e) => e
+              }}
+           </div>;
+         }}
+      </FixedSizeList>
+    : ReactSelect.NoOptionsMessage.make(props);
 };
 
 [@react.component]
