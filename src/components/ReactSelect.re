@@ -1,9 +1,6 @@
-type optionValue = string;
+type optionValue = Country.countryValue;
 
-type opt = {
-  value: optionValue,
-  label: string,
-};
+type opt = Country.t;
 
 type cx;
 type clearValue;
@@ -84,8 +81,6 @@ type components = {
   [@bs.as "MenuList"]
   menuList: MenuList.menuListProps => React.element,
 };
-
-let optFromCountry = (o: Country.t): opt => {value: o.value, label: o.label};
 
 [@bs.module "react-select"] [@react.component]
 external make:

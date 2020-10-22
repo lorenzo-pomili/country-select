@@ -1,9 +1,8 @@
 type state =
   | Loading
   | Error
-  | Loaded(array(Country.t));
+  | Loaded(array(ReactSelect.opt));
 
-// manage not found
 let filterOption = (candidate: ReactSelect.opt, input) =>
   input !== ""
     ? Js.String.toLowerCase(input)
@@ -53,11 +52,23 @@ let menuList = (props: ReactSelect.MenuList.menuListProps) => {
 };
 
 [@react.component]
-let make = (~_className, ~_country, ~_onChange) => {
+let make = (~_className, ~country, ~_onChange) => {
   let (countries, setCountries) = React.useState(() => Loading);
+  let (defaultValue, setDefaultValue) = React.useState(() => None);
   React.useEffect0(() => {
     let request = GetData.makeXMLHttpRequest();
-    GetData.getCountries(request, cs => setCountries(_prev => Loaded(cs)));
+    GetData.getCountries(
+      request,
+      cs => {
+        switch (country) {
+        | None => ()
+        | Some(cVal) =>
+          setDefaultValue(_prev => cs->Belt.Array.getBy(c => c.value === cVal))
+        };
+        setCountries(_prev => Loaded(cs));
+      },
+    );
+
     Some(() => {GetData.abort(request)});
   });
 
@@ -67,7 +78,7 @@ let make = (~_className, ~_country, ~_onChange) => {
      | Error => <div> "Error"->React.string </div>
      | Loaded(cs) =>
        <ReactSelect
-         defaultValue=None
+         defaultValue
          menuIsOpen=None
          components={
            opt: props =>
@@ -87,7 +98,7 @@ let make = (~_className, ~_country, ~_onChange) => {
          isSearchable=true
          filterOption
          name="test"
-         options={cs->Belt.Array.map(ReactSelect.optFromCountry)}
+         options=cs
        />
      }}
   </div>;
