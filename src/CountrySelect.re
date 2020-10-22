@@ -52,9 +52,9 @@ let menuList = (props: ReactSelect.MenuList.menuListProps) => {
 };
 
 [@react.component]
-let make = (~_className, ~country, ~_onChange) => {
+let make = (~_className, ~country, ~onChange) => {
   let (countries, setCountries) = React.useState(() => Loading);
-  let (defaultValue, setDefaultValue) = React.useState(() => None);
+  let (value, setValue) = React.useState(() => None);
   React.useEffect0(() => {
     let request = GetData.makeXMLHttpRequest();
     GetData.getCountries(
@@ -63,7 +63,7 @@ let make = (~_className, ~country, ~_onChange) => {
         switch (country) {
         | None => ()
         | Some(cVal) =>
-          setDefaultValue(_prev => cs->Belt.Array.getBy(c => c.value === cVal))
+          setValue(_prev => cs->Belt.Array.getBy(c => c.value === cVal))
         };
         setCountries(_prev => Loaded(cs));
       },
@@ -78,7 +78,12 @@ let make = (~_className, ~country, ~_onChange) => {
      | Error => <div> "Error"->React.string </div>
      | Loaded(cs) =>
        <ReactSelect
-         defaultValue
+         defaultValue=None
+         value
+         onChange={v => {
+           onChange(v);
+           setValue(_p => Some(v));
+         }}
          menuIsOpen=None
          components={
            opt: props =>

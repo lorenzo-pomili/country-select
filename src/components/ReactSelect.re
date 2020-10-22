@@ -86,7 +86,9 @@ type components = {
 external make:
   (
     ~defaultValue: option(opt),
+    ~value: option(opt),
     ~components: components,
+    ~onChange: opt => unit,
     ~isDisabled: bool,
     ~isLoading: bool,
     ~menuIsOpen: option(bool),
