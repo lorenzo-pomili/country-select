@@ -7,7 +7,7 @@ type childrenProps = {
 external make:
   (
     ~itemSize: int,
-    ~height: string,
+    ~height: int,
     ~itemCount: int,
     ~initialScrollOffset: int,
     ~children: childrenProps => React.element

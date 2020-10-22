@@ -65,7 +65,7 @@ module MenuList = {
     theme,
     innerRef: React.ref(React.element),
     isLoading: bool,
-    maxHeight: string,
+    maxHeight: int,
     children: array(React.element),
   };
 
@@ -89,6 +89,7 @@ external make:
     ~components: components,
     ~isDisabled: bool,
     ~isLoading: bool,
+    ~menuIsOpen: option(bool),
     ~isClearable: bool,
     ~isRtl: bool,
     ~isSearchable: bool,
