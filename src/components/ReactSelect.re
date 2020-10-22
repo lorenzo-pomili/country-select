@@ -5,17 +5,18 @@ type opt = {
   label: string,
 };
 
+type cx;
+type clearValue;
+type getStyles;
+type getValue = unit => option(array(opt));
+type options = array(opt);
+type selectOption;
+type setValue;
+type selectProps;
+type theme;
+
 module Option = {
-  type cx;
-  type getStyles;
   type innerProps;
-  type theme;
-  type selectProps;
-  type setValue;
-  type clearValue;
-  type getValue;
-  type options;
-  type selectOption;
 
   type optionProps = {
     children: React.element,
@@ -48,9 +49,35 @@ module Option = {
   external make: optionProps => React.element = "Option";
 };
 
+module MenuList = {
+  type menuListProps = {
+    cx,
+    clearValue,
+    getStyles,
+    getValue,
+    hasValue: bool,
+    isMulti: bool,
+    isRtl: bool,
+    options,
+    selectOption,
+    setValue,
+    selectProps,
+    theme,
+    innerRef: React.ref(React.element),
+    isLoading: bool,
+    maxHeight: string,
+    children: array(React.element),
+  };
+
+  [@bs.module "react-select"] [@bs.scope "components"] [@bs.val]
+  external make: menuListProps => React.element = "MenuList";
+};
+
 type components = {
   [@bs.as "Option"]
   opt: Option.optionProps => React.element,
+  [@bs.as "MenuList"]
+  menuList: MenuList.menuListProps => React.element,
 };
 
 let optFromCountry = (o: Country.t): opt => {value: o.value, label: o.label};
