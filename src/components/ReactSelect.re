@@ -46,6 +46,13 @@ module Option = {
   external make: optionProps => React.element = "Option";
 };
 
+module Control = {
+  type controlProps;
+
+  [@bs.module "react-select"] [@bs.scope "components"] [@bs.val]
+  external make: controlProps => React.element = "Control";
+};
+
 module MenuList = {
   type menuListProps = {
     cx,
@@ -78,6 +85,8 @@ module NoOptionsMessage = {
 type components = {
   [@bs.as "Option"]
   opt: Option.optionProps => React.element,
+  [@bs.as "Control"]
+  control: Control.controlProps => React.element,
   [@bs.as "MenuList"]
   menuList: MenuList.menuListProps => React.element,
 };

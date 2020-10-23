@@ -55,6 +55,8 @@ let menuList = (props: ReactSelect.MenuList.menuListProps) => {
 let make = (~className, ~country, ~onChange) => {
   let (countries, setCountries) = React.useState(() => Loading);
   let (value, setValue) = React.useState(() => None);
+  let (isOpen, setIsOpen) = React.useState(() => false);
+
   React.useEffect0(() => {
     let request = GetData.makeXMLHttpRequest();
     GetData.getCountries(
@@ -95,6 +97,18 @@ let make = (~className, ~country, ~onChange) => {
                  </CountryFlag>,
              }),
            menuList,
+           control: props => {
+             let text =
+               switch (value) {
+               | None => ""
+               | Some(v) => v.label
+               };
+
+             <div>
+               <Activator text onClick={_e => setIsOpen(prev => !prev)} />
+               {isOpen ? ReactSelect.Control.make(props) : React.null}
+             </div>;
+           },
          }
          isDisabled=false
          isLoading=false
