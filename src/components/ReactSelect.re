@@ -85,6 +85,8 @@ type components = {
 [@bs.module "react-select"] [@react.component]
 external make:
   (
+    ~className: option(string),
+    ~classNamePrefix: option(string),
     ~defaultValue: option(opt),
     ~value: option(opt),
     ~components: components,

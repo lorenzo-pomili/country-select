@@ -52,7 +52,7 @@ let menuList = (props: ReactSelect.MenuList.menuListProps) => {
 };
 
 [@react.component]
-let make = (~_className, ~country, ~onChange) => {
+let make = (~className, ~country, ~onChange) => {
   let (countries, setCountries) = React.useState(() => Loading);
   let (value, setValue) = React.useState(() => None);
   React.useEffect0(() => {
@@ -102,7 +102,9 @@ let make = (~_className, ~country, ~onChange) => {
          isRtl=false
          isSearchable=true
          filterOption
-         name="test"
+         className={Some(className)}
+         classNamePrefix={Some(className)}
+         name="CountrySelect"
          options=cs
        />
      }}
