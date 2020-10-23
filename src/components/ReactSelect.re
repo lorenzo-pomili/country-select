@@ -11,6 +11,12 @@ type selectOption;
 type setValue;
 type selectProps;
 type theme;
+type onBlur;
+type onChange;
+type onFocus;
+type ariaAutocomplete;
+type ariaLabel;
+type ariaLabelledby;
 
 module Option = {
   type innerProps;
@@ -82,18 +88,35 @@ module NoOptionsMessage = {
   external make: MenuList.menuListProps => React.element = "NoOptionsMessage";
 };
 
+module Input = {
+  type inputProps;
+
+  [@bs.module "react-select"] [@bs.scope "components"] [@bs.val]
+  external make: inputProps => React.element = "Input";
+};
+
+type singleValueProps;
+
 type components = {
   [@bs.as "Option"]
   opt: Option.optionProps => React.element,
-  [@bs.as "Control"]
-  control: Control.controlProps => React.element,
+  [@bs.as "Input"]
+  input: Input.inputProps => React.element,
+  [@bs.as "SingleValue"]
+  singleValue: singleValueProps => React.element,
   [@bs.as "MenuList"]
   menuList: MenuList.menuListProps => React.element,
+};
+
+type customStyles = {
+  control: unit => Js.Dict.t(string),
+  valueContainer: Js.Dict.t(string) => Js.Dict.t(string),
 };
 
 [@bs.module "react-select"] [@react.component]
 external make:
   (
+    ~styles: option(customStyles),
     ~className: option(string),
     ~classNamePrefix: option(string),
     ~defaultValue: option(opt),

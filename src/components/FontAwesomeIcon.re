@@ -4,4 +4,5 @@ type faIcon;
 external faSearch: faIcon = "faSearch";
 
 [@bs.module "@fortawesome/react-fontawesome"] [@react.component]
-external make: (~icon: faIcon) => React.element = "FontAwesomeIcon";
+external make: (~icon: faIcon, ~className: option(string)) => React.element =
+  "FontAwesomeIcon";

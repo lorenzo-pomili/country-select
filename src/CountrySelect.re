@@ -1,3 +1,26 @@
+module Style = {
+  open Css;
+  let containerShadow =
+    Shadow.box(
+      ~inset=true,
+      ~x=0->px,
+      ~y=1->px,
+      ~blur=3->px,
+      ~spread=0->px,
+      rgba(0, 0, 0, `num(0.1)),
+    );
+
+  let container =
+    style([
+      width(230->px),
+      // height(199->px),
+      borderRadius(2->px),
+      boxShadow(containerShadow),
+      border(1->px, `solid, rgba(0, 0, 0, `num(0.08))),
+      backgroundColor("ffffff"->hex),
+    ]);
+};
+
 type state =
   | Loading
   | Error
@@ -8,48 +31,6 @@ let filterOption = (candidate: ReactSelect.opt, input) =>
     ? Js.String.toLowerCase(input)
       ->Js.String.includes(Js.String.toLowerCase(candidate.label))
     : true;
-
-let itemSize = 35;
-
-let menuList = (props: ReactSelect.MenuList.menuListProps) => {
-  let selectedValues = props.getValue();
-  let initialOffset =
-    switch (selectedValues) {
-    | None => 0
-    | Some(opts) =>
-      props.options
-      ->Belt.Array.getIndexBy(o =>
-          switch (opts->Belt.Array.get(0)) {
-          | None => false
-          | Some(o2) => o2.value === o.value
-          }
-        )
-      ->Belt.Option.getWithDefault(0)
-      * itemSize
-    };
-
-  let numOfChildren = props.children->Belt.Array.length;
-  let childrenHeight = numOfChildren * itemSize;
-
-  let height =
-    childrenHeight < props.maxHeight ? childrenHeight : props.maxHeight;
-  numOfChildren > 0
-    ? <FixedSizeList
-        itemSize
-        height
-        itemCount={props.children->Belt.Array.length}
-        initialScrollOffset=initialOffset>
-        {({style, index}) => {
-           <div style>
-             {switch (props.children->Belt.Array.get(index)) {
-              | None => React.null
-              | Some(e) => e
-              }}
-           </div>;
-         }}
-      </FixedSizeList>
-    : ReactSelect.NoOptionsMessage.make(props);
-};
 
 [@react.component]
 let make = (~className, ~country, ~onChange) => {
@@ -79,48 +60,73 @@ let make = (~className, ~country, ~onChange) => {
      | Loading => <div> "Loading..."->React.string </div>
      | Error => <div> "Error"->React.string </div>
      | Loaded(cs) =>
-       <ReactSelect
-         defaultValue=None
-         value
-         onChange={v => {
-           onChange(v);
-           setValue(_p => Some(v));
-         }}
-         menuIsOpen=None
-         components={
-           opt: props =>
-             ReactSelect.Option.make({
-               ...props,
-               children:
-                 <CountryFlag countryCode={props.value}>
-                   {props.children}
-                 </CountryFlag>,
-             }),
-           menuList,
-           control: props => {
-             let text =
-               switch (value) {
-               | None => ""
-               | Some(v) => v.label
-               };
-
-             <div>
-               <Activator text onClick={_e => setIsOpen(prev => !prev)} />
-               {isOpen ? ReactSelect.Control.make(props) : React.null}
-             </div>;
-           },
-         }
-         isDisabled=false
-         isLoading=false
-         isClearable=false
-         isRtl=false
-         isSearchable=true
-         filterOption
-         className={Some(className)}
-         classNamePrefix={Some(className)}
-         name="CountrySelect"
-         options=cs
-       />
+       let text =
+         switch (value) {
+         | None => ""
+         | Some(v) => v.label
+         };
+       <>
+         <Activator text onClick={_e => setIsOpen(prev => !prev)} />
+         {!isOpen
+            ? React.null
+            : <div className=Style.container>
+                <ReactSelect
+                  styles={
+                    Some({
+                      control: () =>
+                        Js.Dict.fromArray([|
+                          ("width", "230px"),
+                          ("height", "35px"),
+                          ("display", "flex"),
+                          (
+                            "boxShadow",
+                            "inset 0 -1px 0 0 rgba(0, 0, 0, 0.08)",
+                          ),
+                          ("backgroundColor", "rgba(255, 255, 255, 0.08)"),
+                          ("boxSizing", "border-box"),
+                        |]),
+                      valueContainer: base => {
+                        base->Js.Dict.set("paddingTop", "0px");
+                        base->Js.Dict.set("paddingBottom", "0px");
+                        base->Js.Dict.set("paddingLeft", "0px");
+                        base->Js.Dict.set("paddingRight", "0px");
+                        base;
+                      },
+                    })
+                  }
+                  defaultValue=None
+                  value
+                  onChange={v => {
+                    onChange(v);
+                    setValue(_p => Some(v));
+                  }}
+                  menuIsOpen={Some(true)}
+                  components={
+                    opt: props =>
+                      ReactSelect.Option.make({
+                        ...props,
+                        children:
+                          <CountryFlag countryCode={props.value}>
+                            {props.children}
+                          </CountryFlag>,
+                      }),
+                    menuList: props => <MenuList props />,
+                    singleValue: _props => React.null,
+                    input: props => <Input props />,
+                  }
+                  isDisabled=false
+                  isLoading=false
+                  isClearable=false
+                  isRtl=false
+                  isSearchable=true
+                  filterOption
+                  className={Some(className)}
+                  classNamePrefix={Some(className)}
+                  name="CountrySelect"
+                  options=cs
+                />
+              </div>}
+       </>;
      }}
   </div>;
 };
