@@ -7,6 +7,7 @@ type childrenProps = {
 external make:
   (
     ~itemSize: int,
+    ~className: string,
     ~height: int,
     ~itemCount: int,
     ~initialScrollOffset: int,

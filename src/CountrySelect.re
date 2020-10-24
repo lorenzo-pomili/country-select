@@ -1,21 +1,12 @@
 module Style = {
   open Css;
-  let containerShadow =
-    Shadow.box(
-      ~inset=true,
-      ~x=0->px,
-      ~y=1->px,
-      ~blur=3->px,
-      ~spread=0->px,
-      rgba(0, 0, 0, `num(0.1)),
-    );
 
   let container =
     style([
       width(230->px),
-      // height(199->px),
-      borderRadius(2->px),
-      boxShadow(containerShadow),
+      borderTopLeftRadius(2->px),
+      borderTopRightRadius(2->px),
+      boxShadow(StyleCommon.containerShadow),
       border(1->px, `solid, rgba(0, 0, 0, `num(0.08))),
       backgroundColor("ffffff"->hex),
     ]);
@@ -78,10 +69,6 @@ let make = (~className, ~country, ~onChange) => {
                           ("width", "230px"),
                           ("height", "35px"),
                           ("display", "flex"),
-                          (
-                            "boxShadow",
-                            "inset 0 -1px 0 0 rgba(0, 0, 0, 0.08)",
-                          ),
                           ("backgroundColor", "rgba(255, 255, 255, 0.08)"),
                           ("boxSizing", "border-box"),
                         |]),
@@ -90,6 +77,12 @@ let make = (~className, ~country, ~onChange) => {
                         base->Js.Dict.set("paddingBottom", "0px");
                         base->Js.Dict.set("paddingLeft", "0px");
                         base->Js.Dict.set("paddingRight", "0px");
+                        base;
+                      },
+                      menu: (base, _state) => {
+                        base->Js.Dict.set("marginTop", "2px");
+                        base->Js.Dict.set("marginBottom", "0px");
+                        base->Js.Dict.set("borderRadius", "0px");
                         base;
                       },
                     })
@@ -113,6 +106,8 @@ let make = (~className, ~country, ~onChange) => {
                     menuList: props => <MenuList props />,
                     singleValue: _props => React.null,
                     input: props => <Input props />,
+                    dropdownIndicator: _props => React.null,
+                    indicatorSeparator: _props => React.null,
                   }
                   isDisabled=false
                   isLoading=false
@@ -130,11 +125,3 @@ let make = (~className, ~country, ~onChange) => {
      }}
   </div>;
 };
-
-// {cs
-//  ->Belt.Array.map(c =>
-//      <div key={c.value}>
-//        <CountryFlag countryCode={c.value} />
-//        {c.label}->React.string
-//      </div>
-//    )-> React.array}

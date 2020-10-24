@@ -96,6 +96,8 @@ module Input = {
 };
 
 type singleValueProps;
+type dropdownIndicatorProps;
+type indicatorSeparatorProps;
 
 type components = {
   [@bs.as "Option"]
@@ -106,11 +108,16 @@ type components = {
   singleValue: singleValueProps => React.element,
   [@bs.as "MenuList"]
   menuList: MenuList.menuListProps => React.element,
+  [@bs.as "DropdownIndicator"]
+  dropdownIndicator: dropdownIndicatorProps => React.element,
+  [@bs.as "IndicatorSeparator"]
+  indicatorSeparator: indicatorSeparatorProps => React.element,
 };
 
 type customStyles = {
   control: unit => Js.Dict.t(string),
   valueContainer: Js.Dict.t(string) => Js.Dict.t(string),
+  menu: (Js.Dict.t(string), Js.Dict.t(string)) => Js.Dict.t(string),
 };
 
 [@bs.module "react-select"] [@react.component]

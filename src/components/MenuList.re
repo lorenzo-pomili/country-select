@@ -1,3 +1,18 @@
+module Style = {
+  open Css;
+  let scroll =
+    style([
+      width(230->px),
+      borderBottomLeftRadius(2->px),
+      borderBottomRightRadius(2->px),
+      boxShadow(StyleCommon.containerShadow),
+      border(1->px, `solid, rgba(0, 0, 0, `num(0.08))),
+      backgroundColor("ffffff"->hex),
+      boxSizing(`borderBox),
+      overflowY(`auto),
+    ]);
+};
+
 let itemSize = 35;
 
 [@react.component]
@@ -27,6 +42,7 @@ let make = (~props: ReactSelect.MenuList.menuListProps) => {
   numOfChildren > 0
     ? <FixedSizeList
         itemSize
+        className=Style.scroll
         height
         itemCount={props.children->Belt.Array.length}
         initialScrollOffset=initialOffset>
