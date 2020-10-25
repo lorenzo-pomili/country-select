@@ -6,10 +6,8 @@ module Style = {
       borderBottomLeftRadius(2->px),
       borderBottomRightRadius(2->px),
       boxShadow(StyleCommon.containerShadow),
-      border(1->px, `solid, rgba(0, 0, 0, `num(0.08))),
       backgroundColor("ffffff"->hex),
-      boxSizing(`borderBox),
-      overflowY(`auto),
+      boxSizing(`contentBox),
     ]);
 };
 
@@ -47,7 +45,12 @@ let make = (~props: ReactSelect.MenuList.menuListProps) => {
         itemCount={props.children->Belt.Array.length}
         initialScrollOffset=initialOffset>
         {({style, index}) => {
-           <div style>
+           let newStyle =
+             ReactDOMStyle.combine(
+               style,
+               ReactDOMStyle.make(~boxSizing="border-box", ()),
+             );
+           <div style=newStyle>
              {switch (props.children->Belt.Array.get(index)) {
               | None => React.null
               | Some(e) => e

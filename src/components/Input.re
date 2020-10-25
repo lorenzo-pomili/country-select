@@ -1,7 +1,12 @@
 module Style = {
   open Css;
 
-  let container = style([display(`inlineBlock), marginLeft(10->px)]);
+  let inputContainer =
+    style([
+      display(`inlineBlock),
+      marginLeft(10->px),
+      boxSizing(`borderBox),
+    ]);
 
   let iconContainer = style([display(`inlineBlock)]);
 
@@ -19,7 +24,7 @@ module Style = {
 
 [@react.component]
 let make = (~props: ReactSelect.Input.inputProps) =>
-  <div className=Style.container>
+  <div className=Style.inputContainer>
     <div className=Style.iconContainer>
       <FontAwesomeIcon
         className={Some(Style.icon)}
