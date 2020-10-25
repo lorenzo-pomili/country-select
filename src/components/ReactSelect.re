@@ -17,6 +17,13 @@ type onFocus;
 type ariaAutocomplete;
 type ariaLabel;
 type ariaLabelledby;
+type autoCapitalize;
+type autoComplete;
+type autoCorrect;
+type id;
+type spellCheck;
+type tabIndex;
+type value;
 
 module Option = {
   type innerProps;
@@ -89,7 +96,33 @@ module NoOptionsMessage = {
 };
 
 module Input = {
-  type inputProps;
+  type inputProps = {
+    autoCapitalize,
+    autoComplete,
+    autoCorrect,
+    cx,
+    getStyles,
+    id,
+    innerRef: Js.Nullable.t(Dom.element) => unit,
+    isDisabled: bool,
+    isHidden: bool,
+    onBlur,
+    onChange,
+    onFocus,
+    selectProps,
+    spellCheck,
+    tabIndex,
+    theme,
+    [@bs.as "type"]
+    _type: string,
+    value,
+    [@bs.as "aria-autocomplete"]
+    ariaAutocomplete,
+    [@bs.as "aria-label"]
+    ariaLabel,
+    [@bs.as "aria-labelledby"]
+    ariaLabelledby,
+  };
 
   [@bs.module "react-select"] [@bs.scope "components"] [@bs.val]
   external make: inputProps => React.element = "Input";

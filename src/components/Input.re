@@ -23,7 +23,11 @@ module Style = {
 };
 
 [@react.component]
-let make = (~props: ReactSelect.Input.inputProps) =>
+let make =
+    (
+      ~props: ReactSelect.Input.inputProps,
+      ~inputRef: React.ref(Js.Nullable.t(Dom.element)),
+    ) => {
   <div className=Style.inputContainer>
     <div className=Style.iconContainer>
       <FontAwesomeIcon
@@ -31,5 +35,11 @@ let make = (~props: ReactSelect.Input.inputProps) =>
         icon=FontAwesomeIcon.faSearch
       />
     </div>
-    <span className=Style.input> {ReactSelect.Input.make(props)} </span>
+    <span className=Style.input>
+      {ReactSelect.Input.make({
+         ...props,
+         innerRef: iRef => inputRef.current = iRef,
+       })}
+    </span>
   </div>;
+};

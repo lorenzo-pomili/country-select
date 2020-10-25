@@ -28,6 +28,21 @@ let make = (~className, ~country, ~onChange) => {
   let (countries, setCountries) = React.useState(() => Loading);
   let (value, setValue) = React.useState(() => None);
   let (isOpen, setIsOpen) = React.useState(() => false);
+  let containerRef = React.useRef(Js.Nullable.null);
+
+  React.useEffect2(
+    () => {
+      if (isOpen && containerRef.current !== Js.Nullable.null) {
+        switch (containerRef.current->Js.Nullable.toOption) {
+        | None => ()
+        | Some(c) => ReactDOM.domElementToObj(c)##focus()
+        };
+      };
+
+      None;
+    },
+    (containerRef, isOpen),
+  );
 
   React.useEffect0(() => {
     let request = GetData.makeXMLHttpRequest();
@@ -109,7 +124,7 @@ let make = (~className, ~country, ~onChange) => {
                       }),
                     menuList: props => <MenuList props />,
                     singleValue: _props => React.null,
-                    input: props => <Input props />,
+                    input: props => <Input props inputRef=containerRef />,
                     dropdownIndicator: _props => React.null,
                     indicatorSeparator: _props => React.null,
                   }
