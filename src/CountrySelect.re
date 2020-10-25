@@ -12,6 +12,35 @@ module Style = {
     ]);
 };
 
+let selectComponentsCustomStyle: option(ReactSelect.customStyles) =
+  Some({
+    control: () =>
+      Js.Dict.fromArray([|
+        ("width", "230px"),
+        ("height", "35px"),
+        ("display", "flex"),
+        ("backgroundColor", "rgba(255, 255, 255, 0.08)"),
+        ("boxSizing", "border-box"),
+      |]),
+    valueContainer: base => {
+      base->Js.Dict.set("paddingTop", "0px");
+      base->Js.Dict.set("paddingBottom", "0px");
+      base->Js.Dict.set("paddingLeft", "0px");
+      base->Js.Dict.set("paddingRight", "0px");
+      base;
+    },
+    option: (base, _state) => {
+      base->Js.Dict.set("padding", "0px");
+      base;
+    },
+    menu: (base, _state) => {
+      base->Js.Dict.set("marginTop", "2px");
+      base->Js.Dict.set("marginBottom", "0px");
+      base->Js.Dict.set("borderRadius", "0px");
+      base;
+    },
+  });
+
 type state =
   | Loading
   | Error
@@ -77,35 +106,7 @@ let make = (~className, ~country, ~onChange) => {
             ? React.null
             : <div className=Style.container>
                 <ReactSelect
-                  styles={
-                    Some({
-                      control: () =>
-                        Js.Dict.fromArray([|
-                          ("width", "230px"),
-                          ("height", "35px"),
-                          ("display", "flex"),
-                          ("backgroundColor", "rgba(255, 255, 255, 0.08)"),
-                          ("boxSizing", "border-box"),
-                        |]),
-                      valueContainer: base => {
-                        base->Js.Dict.set("paddingTop", "0px");
-                        base->Js.Dict.set("paddingBottom", "0px");
-                        base->Js.Dict.set("paddingLeft", "0px");
-                        base->Js.Dict.set("paddingRight", "0px");
-                        base;
-                      },
-                      option: (base, _state) => {
-                        base->Js.Dict.set("padding", "0px");
-                        base;
-                      },
-                      menu: (base, _state) => {
-                        base->Js.Dict.set("marginTop", "2px");
-                        base->Js.Dict.set("marginBottom", "0px");
-                        base->Js.Dict.set("borderRadius", "0px");
-                        base;
-                      },
-                    })
-                  }
+                  styles=selectComponentsCustomStyle
                   defaultValue=None
                   value
                   onChange={v => {
