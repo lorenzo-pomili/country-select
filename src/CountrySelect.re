@@ -79,6 +79,10 @@ let make = (~className, ~country, ~onChange) => {
                         base->Js.Dict.set("paddingRight", "0px");
                         base;
                       },
+                      option: (base, _state) => {
+                        base->Js.Dict.set("padding", "0px");
+                        base;
+                      },
                       menu: (base, _state) => {
                         base->Js.Dict.set("marginTop", "2px");
                         base->Js.Dict.set("marginBottom", "0px");

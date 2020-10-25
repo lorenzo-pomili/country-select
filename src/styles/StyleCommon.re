@@ -8,3 +8,12 @@ let containerShadow =
     ~spread=0->px,
     rgba(0, 0, 0, `num(0.1)),
   );
+
+let ellipsis =
+  style([
+    overflowX(`hidden),
+    textOverflow(`ellipsis),
+    whiteSpace(`nowrap),
+  ]);
+
+let optionHeight = 26;

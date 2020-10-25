@@ -13,7 +13,7 @@ module Style = {
     ]);
 };
 
-let itemSize = 35;
+let itemSize = StyleCommon.optionHeight;
 
 [@react.component]
 let make = (~props: ReactSelect.MenuList.menuListProps) => {

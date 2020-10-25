@@ -117,6 +117,7 @@ type components = {
 type customStyles = {
   control: unit => Js.Dict.t(string),
   valueContainer: Js.Dict.t(string) => Js.Dict.t(string),
+  option: (Js.Dict.t(string), Js.Dict.t(string)) => Js.Dict.t(string),
   menu: (Js.Dict.t(string), Js.Dict.t(string)) => Js.Dict.t(string),
 };
 

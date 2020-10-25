@@ -51,7 +51,9 @@ let arrowDown =
 let make = (~text, ~onClick) => {
   <div className=Style.activator onClick>
     <div className=Style.content>
-      <span className=Style.text> text->React.string </span>
+      <span className={Style.text ++ " " ++ StyleCommon.ellipsis}>
+        text->React.string
+      </span>
       <span className=Style.arrow> arrowDown </span>
     </div>
   </div>;
