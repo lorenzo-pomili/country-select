@@ -36,7 +36,6 @@ let make = (~props: ReactSelect.MenuList.menuListProps) => {
 
   let height =
     childrenHeight < props.maxHeight ? childrenHeight : props.maxHeight;
-
   numOfChildren > 0
     ? <FixedSizeList
         itemSize
@@ -45,12 +44,7 @@ let make = (~props: ReactSelect.MenuList.menuListProps) => {
         itemCount={props.children->Belt.Array.length}
         initialScrollOffset=initialOffset>
         {({style, index}) => {
-           let newStyle =
-             ReactDOMStyle.combine(
-               style,
-               ReactDOMStyle.make(~boxSizing="border-box", ()),
-             );
-           <div style=newStyle>
+           <div style>
              {switch (props.children->Belt.Array.get(index)) {
               | None => React.null
               | Some(e) => e
