@@ -63,12 +63,20 @@ let filterOption = (candidate: ReactSelect.opt, input) =>
     : true;
 
 [@react.component]
-let make = (~className, ~country, ~onChange) => {
+let make = (~className, ~country, ~onChange: Country.t => unit) => {
   let (countries, setCountries) = React.useState(() => Loading);
   let (value, setValue) = React.useState(() => None);
   let (isOpen, setIsOpen) = React.useState(() => false);
   let containerRef = React.useRef(Js.Nullable.null);
   let activatorRef = React.useRef(Js.Nullable.null);
+
+  let onChangeValue = v => {
+    switch (v) {
+    | None => ()
+    | Some(v1) => onChange(v1)
+    };
+    setValue(_p => v);
+  };
 
   let toggleOpen = () => setIsOpen(prev => !prev);
 
@@ -101,7 +109,7 @@ let make = (~className, ~country, ~onChange) => {
         switch (country) {
         | None => ()
         | Some(cVal) =>
-          setValue(_prev => cs->Belt.Array.getBy(c => c.value === cVal))
+          onChangeValue(cs->Belt.Array.getBy(c => c.value === cVal))
         };
         setCountries(_prev => Loaded(cs));
       },
@@ -128,7 +136,7 @@ let make = (~className, ~country, ~onChange) => {
            | "Escape" when isOpen =>
              toggleOpen();
              Utils.focusRef(activatorRef);
-           | "Delete" => setValue(_p => Some({value: "", label: ""}))
+           | "Delete" => onChangeValue(Some({value: "", label: ""}))
            | _ => ()
            };
          }}>
@@ -140,10 +148,7 @@ let make = (~className, ~country, ~onChange) => {
                   styles=selectComponentsCustomStyle
                   defaultValue=None
                   value
-                  onChange={v => {
-                    onChange(v);
-                    setValue(_p => Some(v));
-                  }}
+                  onChange={v => onChangeValue(Some(v))}
                   menuIsOpen={Some(true)}
                   components={
                     opt: props =>
