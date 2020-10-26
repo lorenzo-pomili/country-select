@@ -30,11 +30,21 @@ let selectComponentsCustomStyle: option(ReactSelect.customStyles) =
       base;
     },
     option: (base, _state) => {
-      base->Js.Dict.set("padding", "0px");
+      base->Js.Dict.set("height", 26);
+      base->Js.Dict.set("padding", 0);
       base;
     },
     menu: (base, _state) => {
-      base->Js.Dict.set("marginTop", "2px");
+      base->Js.Dict.set("width", "230px");
+      base->Js.Dict.set("borderBottomLeftRadius", "2px");
+      base->Js.Dict.set("borderBottomRightRadius", "2px");
+      base->Js.Dict.set("border", "solid 1px rgba(0, 0, 0, 0.08)");
+      base->Js.Dict.set("boxShadow", "0 1px 3px 0 rgba(0, 0, 0, 0.1)");
+      base->Js.Dict.set("backgroundColor", "#ffffff");
+      base->Js.Dict.set("boxSizing", "contentBox");
+
+      base->Js.Dict.set("marginTop", "1px");
+      base->Js.Dict.set("left", "-1px");
       base->Js.Dict.set("marginBottom", "0px");
       base->Js.Dict.set("borderRadius", "0px");
       base;
@@ -120,7 +130,8 @@ let make = (~className, ~country, ~onChange) => {
                             {props.children}
                           </CountryFlag>,
                       }),
-                    menuList: props => <MenuList props />,
+                    menuList: props =>
+                      ReactSelect.WindowedMenuList.make(props),
                     singleValue: _props => React.null,
                     input: props => <Input props inputRef=containerRef />,
                     dropdownIndicator: _props => React.null,

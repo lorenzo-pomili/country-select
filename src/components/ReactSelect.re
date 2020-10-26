@@ -66,33 +66,16 @@ module Control = {
   external make: controlProps => React.element = "Control";
 };
 
-module MenuList = {
-  type menuListProps = {
-    cx,
-    clearValue,
-    getStyles,
-    getValue,
-    hasValue: bool,
-    isMulti: bool,
-    isRtl: bool,
-    options,
-    selectOption,
-    setValue,
-    selectProps,
-    theme,
-    innerRef: React.ref(React.element),
-    isLoading: bool,
-    maxHeight: int,
-    children: array(React.element),
-  };
+type menuListProps;
 
-  [@bs.module "react-select"] [@bs.scope "components"] [@bs.val]
-  external make: menuListProps => React.element = "MenuList";
+module WindowedMenuList = {
+  [@bs.module "react-windowed-select"] [@bs.val]
+  external make: menuListProps => React.element = "WindowedMenuList";
 };
 
 module NoOptionsMessage = {
   [@bs.module "react-select"] [@bs.scope "components"] [@bs.val]
-  external make: MenuList.menuListProps => React.element = "NoOptionsMessage";
+  external make: menuListProps => React.element = "NoOptionsMessage";
 };
 
 module Input = {
@@ -140,7 +123,7 @@ type components = {
   [@bs.as "SingleValue"]
   singleValue: singleValueProps => React.element,
   [@bs.as "MenuList"]
-  menuList: MenuList.menuListProps => React.element,
+  menuList: menuListProps => React.element,
   [@bs.as "DropdownIndicator"]
   dropdownIndicator: dropdownIndicatorProps => React.element,
   [@bs.as "IndicatorSeparator"]
@@ -150,7 +133,7 @@ type components = {
 type customStyles = {
   control: unit => Js.Dict.t(string),
   valueContainer: Js.Dict.t(string) => Js.Dict.t(string),
-  option: (Js.Dict.t(string), Js.Dict.t(string)) => Js.Dict.t(string),
+  option: (Js.Dict.t(int), Js.Dict.t(int)) => Js.Dict.t(int),
   menu: (Js.Dict.t(string), Js.Dict.t(string)) => Js.Dict.t(string),
 };
 
