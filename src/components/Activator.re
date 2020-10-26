@@ -9,6 +9,10 @@ module Style = {
       border(1->px, `solid, rgba(0, 0, 0, `num(0.2))),
       backgroundColor("ffffff"->hex),
       cursor(`pointer),
+      focus([
+        backgroundColor("cccccc"->hex),
+        outline(0->px, `none, "ffffff"->hex),
+      ]),
     ]);
 
   let content =
@@ -48,8 +52,12 @@ let arrowDown =
   <svg viewBox="0 0 100 100"> <polygon points="50 75, 100 0, 0 0" /> </svg>;
 
 [@react.component]
-let make = (~text, ~onClick) => {
-  <div className=Style.activator onClick>
+let make = (~text, ~onClick, ~activatorRef) => {
+  <div
+    className=Style.activator
+    onClick
+    ref={ReactDOM.Ref.domRef(activatorRef)}
+    tabIndex=0>
     <div className=Style.content>
       <span className={Style.text ++ " " ++ StyleCommon.ellipsis}>
         text->React.string

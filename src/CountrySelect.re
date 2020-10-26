@@ -68,8 +68,19 @@ let make = (~className, ~country, ~onChange) => {
   let (value, setValue) = React.useState(() => None);
   let (isOpen, setIsOpen) = React.useState(() => false);
   let containerRef = React.useRef(Js.Nullable.null);
+  let activatorRef = React.useRef(Js.Nullable.null);
 
   let toggleOpen = () => setIsOpen(prev => !prev);
+
+  React.useEffect1(
+    () => {
+      if (isOpen) {
+        Utils.focusRef(containerRef);
+      };
+      None;
+    },
+    [|value|],
+  );
 
   React.useEffect2(
     () => {
@@ -114,12 +125,14 @@ let make = (~className, ~country, ~onChange) => {
            let key = e->ReactEvent.Keyboard.key;
            switch (key) {
            | "ArrowDown" when !isOpen => toggleOpen()
-           | "Escape" when isOpen => toggleOpen()
+           | "Escape" when isOpen =>
+             toggleOpen();
+             Utils.focusRef(activatorRef);
            | "Delete" => setValue(_p => Some({value: "", label: ""}))
            | _ => ()
            };
          }}>
-         <Activator text onClick={_e => toggleOpen()} />
+         <Activator text onClick={_e => toggleOpen()} activatorRef />
          {!isOpen
             ? React.null
             : <div className=Style.container>
