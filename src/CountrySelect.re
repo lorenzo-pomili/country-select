@@ -112,7 +112,6 @@ let make = (~className, ~country, ~onChange) => {
        <div
          onKeyDown={e => {
            let key = e->ReactEvent.Keyboard.key;
-           Js.log2("key: ", key);
            switch (key) {
            | "ArrowDown" when !isOpen => toggleOpen()
            | "Escape" when isOpen => toggleOpen()
