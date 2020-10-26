@@ -62,10 +62,7 @@ let make = (~className, ~country, ~onChange) => {
   React.useEffect2(
     () => {
       if (isOpen && containerRef.current !== Js.Nullable.null) {
-        switch (containerRef.current->Js.Nullable.toOption) {
-        | None => ()
-        | Some(c) => ReactDOM.domElementToObj(c)##focus()
-        };
+        Utils.focusRef(containerRef);
       };
 
       None;
