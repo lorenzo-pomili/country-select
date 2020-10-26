@@ -2,10 +2,11 @@
   "name": "country-select",
   "version": "0.1.0",
   "scripts": {
-    "build": "bsb -make-world",
+    "start-no-watch": "bsb -make-world -w -ws _ ",
     "start": "bsb -make-world -w -ws _ ",
     "clean": "bsb -clean-world",
     "server": "webpack serve",
+    "build": "webpack --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
