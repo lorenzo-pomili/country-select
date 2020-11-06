@@ -51,6 +51,33 @@ let selectComponentsCustomStyle: option(ReactSelect.customStyles) =
     },
   });
 
+[@bs.val] [@bs.scope "document"]
+external documentAddEventListener: (string, ReactEvent.Mouse.t => unit) => unit =
+  "addEventListener";
+[@bs.val] [@bs.scope "document"]
+external documentRemoveEventListener:
+  (string, ReactEvent.Mouse.t => unit) => unit =
+  "removeEventListener";
+
+let setCloseOnClickOutside = (r: React.ref('a), close) => {
+  React.useEffect1(
+    () => {
+      let handler = e => {
+        let event = ReactEvent.Mouse.target(e);
+        switch (r.current->Js.Nullable.toOption) {
+        | None => ()
+        | Some(c) =>
+          ReactDOM.domElementToObj(c)##contains(event) ? () : close()
+        };
+      };
+
+      documentAddEventListener("mousedown", handler);
+      Some(() => documentRemoveEventListener("mousedown", handler));
+    },
+    [|r|],
+  );
+};
+
 type state =
   | Loading
   | Error
@@ -67,6 +94,7 @@ let make = (~className, ~country, ~onChange: Country.t => unit) => {
   let (countries, setCountries) = React.useState(() => Loading);
   let (value, setValue) = React.useState(() => None);
   let (isOpen, setIsOpen) = React.useState(() => false);
+  let wholeElementRef = React.useRef(Js.Nullable.null);
   let containerRef = React.useRef(Js.Nullable.null);
   let activatorRef = React.useRef(Js.Nullable.null);
 
@@ -118,7 +146,9 @@ let make = (~className, ~country, ~onChange: Country.t => unit) => {
     Some(() => {GetData.abort(request)});
   });
 
-  <div>
+  setCloseOnClickOutside(wholeElementRef, () => setIsOpen(_prev => false));
+
+  <div ref={ReactDOM.Ref.domRef(wholeElementRef)}>
     {switch (countries) {
      | Loading => <div> "Loading..."->React.string </div>
      | Error => <div> "Error"->React.string </div>
